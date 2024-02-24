@@ -11,7 +11,9 @@ import { Input } from "./ui/Input";
 const Header = () => {
 
   const [_, setQParamKeyword] = useQueryState('keyword')
+  console.log('🚀 ~ _:', _);
   const [__, setQParamLimit] = useQueryState('limit')
+  console.log('🚀 ~ __:', __);
   const [isShowDialog, setIsShowDialog] = useState(false);
   const [keyword, setKeyword] = useState('');
 
