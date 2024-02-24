@@ -11,23 +11,24 @@ import { siteConfig } from "@/constant/config";
 import music from '@/integrations/music';
 
 import { IResponse } from "../../global";
+import { useEffect, useState } from "react";
 
 const ListPage = () => {
 
   const searchParams = useSearchParams();
-  const [limit, setLimit] = useQueryState('limit')
-
   const qParamKeyword = searchParams.get('keyword');
   const qParamLimit = searchParams.get('limit');
+  const [limit, setLimit] = useQueryState('limit');
+  const [cacheValue, setCacheValue] = useState({keyword: qParamKeyword, limit: qParamLimit});
+
 
   
   const loadMore = () => {
     const newLimit = `${Number(qParamLimit) + Number(qParamLimit)}`;
     setLimit(newLimit);
-    refetch();
   };
 
-  const { data = { results: [] }, isLoading, refetch } = useQuery({
+  const { data = { results: [] }, isLoading } = useQuery({
     queryKey: ['musicList'],
     refetchOnWindowFocus: false,
     queryFn: async () => {
@@ -36,8 +37,13 @@ const ListPage = () => {
 
       return data
     },
-    enabled: !!qParamKeyword
+    enabled: cacheValue?.keyword !== qParamKeyword || cacheValue?.limit !== qParamLimit
   });
+
+  useEffect(() => {
+    setCacheValue({keyword: qParamKeyword, limit: qParamLimit})
+    console.log('🚀 ~ {keyword: qParamKeyword, limit: qParamLimit}:', {keyword: qParamKeyword, limit: qParamLimit});
+  }, [qParamKeyword, qParamLimit]);
 
   return (
     <>
@@ -48,7 +54,7 @@ const ListPage = () => {
       </Head>
 
       <Header />
-      <div className="bg-slate-100 h-screen pt-6 px-5 pb-16 lg:grid lg:max-w-7xl lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:pt-5">
+      <div className="bg-slate-100 min-h-screen pt-6 px-5 pb-16 lg:grid lg:max-w-7xl lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:pt-5">
 
         <h1 className="text-sm text-center">Search result for: <span className="text-lg font-bold text-violet-700">{qParamKeyword}</span></h1>
         

@@ -1,8 +1,8 @@
-import { useCallback,useState } from "react";
 import { useQueryState } from "nuqs";
+import { useCallback,useState } from "react";
 
-import style from "@/styles/components/Header.module.scss";
 import ButtonStyle from "@/styles/components/Button.module.scss";
+import style from "@/styles/components/Header.module.scss";
 
 import { Button } from "./ui/Button";
 import { Dialog, DialogContent,DialogHeader } from "./ui/Dialog";
@@ -10,8 +10,8 @@ import { Input } from "./ui/Input";
 
 const Header = () => {
 
-  const [_, setKeywordValue] = useQueryState('keyword')
-  console.log('🚀 ~ _:', _);
+  const [_, setQParamKeyword] = useQueryState('keyword')
+  const [__, setQParamLimit] = useQueryState('limit')
   const [isShowDialog, setIsShowDialog] = useState(false);
   const [keyword, setKeyword] = useState('');
 
@@ -22,7 +22,8 @@ const Header = () => {
 
   const searchMusic = useCallback(() => {
     setIsShowDialog(false);
-    setKeywordValue(keyword);
+    setQParamKeyword(keyword);
+    setQParamLimit('4');
   }, [keyword]);
 
   return (
@@ -38,8 +39,10 @@ const Header = () => {
       <Dialog open={isShowDialog}>
         <DialogContent className="bg-gray-900 opacity-85 h-screen overflow-auto flex flex-col max-w-sm">
           <>
-            <DialogHeader className="flex justify-end">
-              <Button onClick={() => setIsShowDialog(false)} size="icon" className="text-white bg-transparent">X</Button>
+            <DialogHeader className="flex items-end">
+              <Button onClick={() => setIsShowDialog(false)} size="icon" className="text-white bg-transparent">
+                <img src="/icons/x.webp" className="w-[16px]" />
+              </Button>
             </DialogHeader>
             <div className="py-4 my-auto">
               <div className="flex flex-col px-4 justify-center mb-6 gap-4">
