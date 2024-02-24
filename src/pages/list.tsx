@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useSearchParams } from 'next/navigation';
 import { useQueryState } from "nuqs";
+import { useEffect, useState } from "react";
 import { useQuery } from 'react-query';
 
 import Header from "@/components/Header";
@@ -11,7 +12,6 @@ import { siteConfig } from "@/constant/config";
 import music from '@/integrations/music';
 
 import { IResponse } from "../../global";
-import { useEffect, useState } from "react";
 
 const ListPage = () => {
 
@@ -19,7 +19,7 @@ const ListPage = () => {
   const qParamKeyword = searchParams.get('keyword');
   const qParamLimit = searchParams.get('limit');
   const [limit, setLimit] = useQueryState('limit');
-  const [cacheValue, setCacheValue] = useState({keyword: qParamKeyword, limit: qParamLimit});
+  const [cacheValue, setCacheValue] = useState({keyword: '', limit: ''});
 
 
   
