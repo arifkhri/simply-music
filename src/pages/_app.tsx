@@ -4,7 +4,6 @@ import {
   QueryClientProvider,
 } from 'react-query'
 
-import 'reactflow/dist/style.css';
 import '@/styles/globals.scss'
 
 import Layout from '@/components/Layout'
