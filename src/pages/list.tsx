@@ -1,47 +1,43 @@
 import Head from "next/head";
-import { useQuery } from 'react-query';
 import { useSearchParams } from 'next/navigation';
+import { useQueryState } from "nuqs";
+import { useQuery } from 'react-query';
 
 import Header from "@/components/Header";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 
 import { siteConfig } from "@/constant/config";
 import music from '@/integrations/music';
+
 import { IResponse } from "../../global";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-// import { useRouter } from "next/router";
 
 const ListPage = () => {
 
   const searchParams = useSearchParams();
-  // const {replace} = useRouter();
+  const [limit, setLimit] = useQueryState('limit')
+
   const qParamKeyword = searchParams.get('keyword');
   const qParamLimit = searchParams.get('limit');
 
-	// const newQueryParameters: URLSearchParams = new URLSearchParams();
+  
+  const loadMore = () => {
+    const newLimit = `${Number(qParamLimit) + Number(qParamLimit)}`;
+    setLimit(newLimit);
+    refetch();
+  };
 
-  const { data = { results: [] }, isLoading } = useQuery({
+  const { data = { results: [] }, isLoading, refetch } = useQuery({
     queryKey: ['musicList'],
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const keyword = qParamKeyword.replace(/\s+/g, '+');
-      const data = await music.getList<IResponse>({ term: keyword, limit: qParamLimit });
-      console.log('🚀 ~ data:', data);
+      const data = await music.getList<IResponse>({ term: keyword, limit: limit });
 
       return data
     },
     enabled: !!qParamKeyword
   });
-  
-  const loadMore = () => {
-    // window.URL;
-    // replace();
-
-    // const limit = `${Number(qParamLimit) + Number(qParamLimit)}`;
-    // newQueryParameters.set('limit',  limit);
-    // setSearchParams(newQueryParameters);
-    // console.log('🚀 ~ limit:', limit);
-    // refetch();
-  };
 
   return (
     <>

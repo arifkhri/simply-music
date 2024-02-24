@@ -1,9 +1,10 @@
 import * as React from "react";
 
+import style from "@/styles/components/Card.module.scss";
+
 import { cn } from "@/utils/shadcnUI";
 
 import { BaseProps } from "../../../global";
-import style from "@/styles/components/Card.module.scss";
 
 const Card = React.forwardRef(({ className, ...props }: BaseProps, ref: React.LegacyRef<HTMLDivElement>) => (
   <div

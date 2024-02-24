@@ -2,12 +2,12 @@ import Head from "next/head";
 import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react';
 
+import style from '@/styles/pages/home.module.scss';
+
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 import { siteConfig } from "@/constant/config";
-
-import style from '@/styles/pages/home.module.scss';
 
 const HomePage = () => {
   const [keyword, setKeyword] = useState('');
